@@ -1,0 +1,47 @@
+#%RAML 1.0
+title: bank-customer-check-balance
+version: v1
+protocols:
+  - HTTP
+  - HTTPS
+description: "This is an API to check the customer account balance"
+
+securitySchemes:
+  secure: !include securitySchema/securityScheme.raml
+securedBy:
+  - secure
+  
+/checkBalance:
+  get:
+    queryParameters:
+      bank:
+        required: true
+        enum:
+          - SBI
+          - ICICI
+          - HDFC
+          - AXIS
+      type:
+        required: true
+        enum:
+          - savings
+          - current
+      accountNum:
+        required: true
+        type: string
+        maxLength: 10
+        minLength: 10
+      atmPin:
+        required: true
+        type: string
+        maxLength: 4
+        minLength: 4
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {
+                "status": "Your total balance is 5364.00 as on 09-SEP-2025"
+              }
+      
